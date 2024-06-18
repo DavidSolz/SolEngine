@@ -39,31 +39,34 @@ int main(){
     defaultShader.attachShader("shaders/default.frag", GL_FRAGMENT_SHADER);
     defaultShader.link();
 
-    Texture2D texture;
+    Texture2D backTexture;
 
-    std::vector<color> colors = {
+    std::vector<color> backcolors = {
         {255, 0, 0, 255},
         {0, 255, 0, 255},
         {0, 0, 255, 255},
         {255, 255, 255, 255}
     };
 
-    texture.create(colors, 2, 2);
-    texture.setParam(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    texture.setParam(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    texture.setParam(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    texture.setParam(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    backTexture.create(backcolors, 2, 2);
+    backTexture.setParam(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    backTexture.setParam(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    backTexture.setParam(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    backTexture.setParam(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 
-    while ( !ctx.shouldClose() )
-    {
+    while ( !ctx.shouldClose() ) {
 
         ctx.update();
-        ctx.clearBuffers(GL_COLOR_BUFFER_BIT);
+        ctx.clearBuffers(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        float time = glfwGetTime();
 
         defaultShader.use();
 
-        texture();
+        backTexture();
         geometries["triangle"]->render();
 
     }

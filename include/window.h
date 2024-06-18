@@ -37,11 +37,11 @@ public:
 
     void setErrorCallback(GLFWerrorfun callback);
 
-    void update();
-
     void clearBuffers(GLenum bufferBits);
 
     bool shouldClose();
+
+    void update();
 
     ~Window();
 };

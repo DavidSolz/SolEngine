@@ -19,11 +19,19 @@ private:
 
     bool checkProgramStatus(GLuint shader);
 
+    GLint locateUniform(const std::string & name);
+
 public:
 
     GLShader();
 
-    void attachShader(const std::string & shaderPath, const GLenum type);
+    void attachShader(const std::string & shaderPath, const GLenum & type);
+
+    void setUniform(const std::string & name, const GLfloat & value);
+
+    void setUniform(const std::string & name, const GLint & value);
+
+    void setUniform(const std::string & name, const vec3 & value);
 
     void link();
 

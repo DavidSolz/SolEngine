@@ -38,7 +38,54 @@ bool GLShader::checkShaderStatus(GLuint shader){
     return true;
 }
 
-void GLShader::attachShader(const std::string & shaderPath, const GLenum type){
+GLint GLShader::locateUniform(const std::string & name){
+
+    GLint location = -1;
+
+    auto it = m_uniforms.find(name);
+
+    if( it != m_uniforms.end() ){
+        location = it->second;
+    }else{
+        location = glGetUniformLocation(m_shader, name.c_str());
+        m_uniforms[name] = location;
+    }
+
+    return location;
+}
+
+void GLShader::setUniform(const std::string & name, const GLfloat & value){
+
+    GLint location = locateUniform(name);
+
+    if( location < 0 )
+        return;
+
+    glUniform1f(location, value);
+
+}
+
+void GLShader::setUniform(const std::string & name, const GLint & value){
+
+    GLint location = locateUniform(name);
+
+    if( location < 0 )
+        return;
+
+    glUniform1i(location, value);
+}
+
+void GLShader::setUniform(const std::string & name, const vec3 & value){
+
+    GLint location = locateUniform(name);
+
+    if( location < 0 )
+        return;
+
+    glUniform3fv(location, 1, (GLfloat*)&value);
+}
+
+void GLShader::attachShader(const std::string & shaderPath, const GLenum & type){
     std::ifstream input(shaderPath);
 
     if( !input.is_open() ){
