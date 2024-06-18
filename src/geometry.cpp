@@ -34,7 +34,7 @@ void Geometry::setIndices(const std::vector<GLuint> & indices){
     glBindVertexArray(0);
 }
 
-void Geometry::setVertices(const std::vector<vec3> & vertices){
+void Geometry::setVertices(const std::vector<Vec3> & vertices){
 
     if( vertices.size() == 0 )
         return;
@@ -48,7 +48,7 @@ void Geometry::setVertices(const std::vector<vec3> & vertices){
 
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);

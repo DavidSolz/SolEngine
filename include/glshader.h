@@ -7,6 +7,7 @@
 #include <fstream>
 #include <iostream>
 #include "vec3.h"
+#include "mat4.h"
 
 class GLShader {
 
@@ -31,7 +32,9 @@ public:
 
     void setUniform(const std::string & name, const GLint & value);
 
-    void setUniform(const std::string & name, const vec3 & value);
+    void setUniform(const std::string & name, const Vec3 & value);
+
+    void setUniform(const std::string & name, const Mat4 & value);
 
     void link();
 

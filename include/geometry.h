@@ -26,7 +26,7 @@ public:
 
     void setIndices(const std::vector<GLuint> & indices);
 
-    void setVertices(const std::vector<vec3> & vertices);
+    void setVertices(const std::vector<Vec3> & vertices);
 
     void setTexCoords(const std::vector<float> & coords);
 

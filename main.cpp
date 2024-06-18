@@ -8,7 +8,6 @@ std::unordered_map<std::string, Geometry *> geometries;
 void windowResizeCallback(GLFWwindow * window, int width, int height);
 void windowErrorCallback(int code, const char * description);
 
-
 int main(){
 
     Window ctx;
@@ -19,10 +18,10 @@ int main(){
 
     geometries["triangle"] = new Geometry();
 
-    std::vector<vec3> vertices = {
-        {-1.0, -1.0, 0.0},
-        {1.0, -1.0, 0.0},
-        {0.0, 1.0, 0.0}
+    std::vector<Vec3> vertices = {
+        {-0.5, -0.5, 0.0},
+        {0.5, -0.5, 0.0},
+        {0.0, 0.5, 0.0}
     };
 
     std::vector<float> texCoords = {
@@ -54,18 +53,22 @@ int main(){
     backTexture.setParam(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     backTexture.setParam(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
 
     while ( !ctx.shouldClose() ) {
 
         ctx.update();
-        ctx.clearBuffers(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        float time = glfwGetTime();
+        ctx.clearBuffers(GL_COLOR_BUFFER_BIT);
 
         defaultShader.use();
 
+        float time = glfwGetTime();
+
+        Mat4 translation = Mat4::translate({0, 0, 0});
+        Mat4 scale = Mat4::scale({1, 1, 1});
+        Mat4 rotate = Mat4::rotate(time, {0, sin(time), cos(time)});
+        Mat4 modelMatrix = scale * translation * rotate;
+
+        defaultShader.setUniform("modelMatrix", modelMatrix);
         backTexture();
         geometries["triangle"]->render();
 

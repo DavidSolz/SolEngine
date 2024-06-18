@@ -75,7 +75,7 @@ void GLShader::setUniform(const std::string & name, const GLint & value){
     glUniform1i(location, value);
 }
 
-void GLShader::setUniform(const std::string & name, const vec3 & value){
+void GLShader::setUniform(const std::string & name, const Vec3 & value){
 
     GLint location = locateUniform(name);
 
@@ -83,6 +83,16 @@ void GLShader::setUniform(const std::string & name, const vec3 & value){
         return;
 
     glUniform3fv(location, 1, (GLfloat*)&value);
+}
+
+void GLShader::setUniform(const std::string & name, const Mat4 & value){
+
+    GLint location = locateUniform(name);
+
+    if( location < 0 )
+        return;
+
+    glUniformMatrix4fv(location, 1, GL_TRUE, (GLfloat*)&value);
 }
 
 void GLShader::attachShader(const std::string & shaderPath, const GLenum & type){
