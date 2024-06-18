@@ -2,7 +2,7 @@
 #define GEOMETRY_H
 
 #include <GL/glew.h>
-
+#include <vector>
 #include "vec3.h"
 
 class Geometry{
@@ -11,6 +11,7 @@ private:
     GLuint m_vao;
     GLuint m_vbo;
     GLuint m_ebo;
+    GLuint m_tbo;
 
     GLenum m_mode;
 
@@ -23,9 +24,11 @@ public:
 
     void setRenderMode(GLenum mode);
 
-    void setIndices(GLuint * indices, GLint number);
+    void setIndices(const std::vector<GLuint> & indices);
 
-    void setVertices(vec3 * vertices, GLint number);
+    void setVertices(const std::vector<vec3> & vertices);
+
+    void setTexCoords(const std::vector<float> & coords);
 
     void render();
 
