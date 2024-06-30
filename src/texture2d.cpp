@@ -8,9 +8,6 @@ Texture2D::Texture2D(){
 
 void Texture2D::create(const std::vector<color> & colors, const GLuint & width, const GLuint & height){
 
-    if( colors.size() != width * height)
-        return;
-
     this->m_width = width;
     this->m_height = height;
 
@@ -20,7 +17,11 @@ void Texture2D::create(const std::vector<color> & colors, const GLuint & width, 
     glGenTextures(1, &m_texture);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, colors.data());
+    if(colors.size() > 0){
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, colors.data());
+    }else{
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+    }
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -61,8 +62,13 @@ void Texture2D::setParam(const GLenum & param, const GLint & value){
 
 }
 
-void Texture2D::operator()(){
+void Texture2D::use() const {
     glBindTexture(GL_TEXTURE_2D, m_texture);
+}
+
+
+GLuint Texture2D::operator()() const{
+    return m_texture;
 }
 
 Texture2D::~Texture2D(){

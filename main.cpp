@@ -1,9 +1,9 @@
 #include "include/window.h"
-#include "include/geometry.h"
+#include "include/mesh.h"
 #include "include/glshader.h"
 #include "include/texture2d.h"
-
-std::unordered_map<std::string, Geometry *> geometries;
+#include "include/framebuffer.h"
+#include "include/scene.h"
 
 void windowResizeCallback(GLFWwindow * window, int width, int height);
 void windowErrorCallback(int code, const char * description);
@@ -16,23 +16,6 @@ int main(){
     ctx.setResizeCallback(windowResizeCallback);
     ctx.setErrorCallback(windowErrorCallback);
 
-    geometries["triangle"] = new Geometry();
-
-    std::vector<Vec3> vertices = {
-        {-0.5, -0.5, 0.0},
-        {0.5, -0.5, 0.0},
-        {0.0, 0.5, 0.0}
-    };
-
-    std::vector<float> texCoords = {
-        0.0f, 0.0f,
-        1.0f, 0.0f,
-        0.5f, 1.0f
-    };
-
-    geometries["triangle"]->setVertices(vertices);
-    geometries["triangle"]->setTexCoords(texCoords);
-
     GLShader defaultShader;
     defaultShader.attachShader("shaders/default.vert", GL_VERTEX_SHADER);
     defaultShader.attachShader("shaders/default.frag", GL_FRAGMENT_SHADER);
@@ -41,41 +24,80 @@ int main(){
     Texture2D backTexture;
 
     std::vector<color> backcolors = {
-        {255, 0, 0, 255},
-        {0, 255, 0, 255},
         {0, 0, 255, 255},
-        {255, 255, 255, 255}
     };
 
-    backTexture.create(backcolors, 2, 2);
+    backTexture.create(backcolors, 1, 1);
     backTexture.setParam(GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     backTexture.setParam(GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     backTexture.setParam(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     backTexture.setParam(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    const int32_t width = 16;
+    const int32_t height = 16;
+
+    std::vector<Vector3> vertices;
+
+    float horizontalResolution = 1.0f/width;
+    float verticalResolution = 1.0f/height;
+
+    for(int32_t i = 0; i < width; i++){
+
+        float x = ( i - width * 0.5f)/(width * 0.5f) + horizontalResolution;
+
+        for(int32_t j = 0; j < height; j++){
+
+            float y = ( j - height * 0.5f)/(height * 0.5f) + verticalResolution;
+
+            vertices.push_back({x, y, 0.0f});
+
+        }
+
+    }
+
+    std::vector<GLuint> indices;
+
+    for (int32_t i = 0; i < width - 1; ++i) {
+        for (int32_t j = 0; j < height - 1; ++j) {
+            GLuint i0 = i * height + j;
+            GLuint i1 = i0 + 1;
+            GLuint i2 = (i + 1) * height + j;
+            GLuint i3 = i2 + 1;
+
+            indices.push_back(i0);
+            indices.push_back(i2);
+            indices.push_back(i1);
+
+            indices.push_back(i1);
+            indices.push_back(i2);
+            indices.push_back(i3);
+        }
+    }
+
+    glPointSize(3.0f);
+
+    Mesh g;
+    g.setVertices(vertices);
+    g.setIndices(indices);
+    g.setRenderMode(GL_TRIANGLES);
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    Matrix4 modelMatrix = Matrix4();
 
     while ( !ctx.shouldClose() ) {
 
         ctx.update();
-        ctx.clearBuffers(GL_COLOR_BUFFER_BIT);
+        ctx.clearBuffers(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         defaultShader.use();
-
-        float time = glfwGetTime();
-
-        Mat4 translation = Mat4::translate({0, 0, 0});
-        Mat4 scale = Mat4::scale({1, 1, 1});
-        Mat4 rotate = Mat4::rotate(time, {0, sin(time), cos(time)});
-        Mat4 modelMatrix = scale * translation * rotate;
-
         defaultShader.setUniform("modelMatrix", modelMatrix);
-        backTexture();
-        geometries["triangle"]->render();
+
+        backTexture.use();
+        g.render();
 
     }
-
-    for( auto pair : geometries)
-        delete pair.second;
 
     return 0;
 }

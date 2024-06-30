@@ -1,6 +1,6 @@
-#include "mat4.h"
+#include "matrix4.h"
 
-Mat4::Mat4(){
+Matrix4::Matrix4(){
 
     for(int32_t i = 0; i < 16; i++)
         m_data[i] = 0.0f;
@@ -8,7 +8,7 @@ Mat4::Mat4(){
     identity();
 }
 
-void Mat4::transpose(){
+void Matrix4::transpose(){
 
     for(int32_t i = 0; i < 4; i ++){
         for( int32_t j = i + 1; j < 4; j ++){
@@ -20,7 +20,7 @@ void Mat4::transpose(){
 
 }
 
-void Mat4::identity(){
+void Matrix4::identity(){
 
     m_data[0] = 1.0f;
     m_data[5] = 1.0f;
@@ -29,14 +29,14 @@ void Mat4::identity(){
 
 }
 
-float& Mat4::operator[](const int32_t & index){
+float& Matrix4::operator[](const int32_t & index){
     uint32_t idx = std::max(0, std::min(index, 16));
     return m_data[idx];
 }
 
-Mat4 Mat4::operator*(const Mat4 & matrix) const{
+Matrix4 Matrix4::operator*(const Matrix4 & matrix) const{
 
-    Mat4 result;
+    Matrix4 result;
 
     for( int32_t i = 0; i < 4; i++ ){
 
@@ -57,7 +57,7 @@ Mat4 Mat4::operator*(const Mat4 & matrix) const{
     return result;
 }
 
-void Mat4::show() const{
+void Matrix4::show() const{
 
     std::cout<<std::endl;
 
@@ -70,7 +70,7 @@ void Mat4::show() const{
 
 }
 
-float Mat4::determinant() const{
+float Matrix4::determinant() const{
 
     float det1 = m_data[0] * m_data[5] - m_data[1] * m_data[4];
     float det2 = m_data[2] * m_data[7] - m_data[3] * m_data[6];
@@ -82,9 +82,9 @@ float Mat4::determinant() const{
     return det;
 }
 
-Mat4 Mat4::translate(const Vec3 & translation){
+Matrix4 Matrix4::translate(const Vector3 & translation){
 
-    Mat4 result;
+    Matrix4 result;
 
     result.m_data[0] = 1;
     result.m_data[3] = translation.x;
@@ -98,9 +98,9 @@ Mat4 Mat4::translate(const Vec3 & translation){
 
 }
 
-Mat4 Mat4::scale(const Vec3 & scale){
+Matrix4 Matrix4::scale(const Vector3 & scale){
 
-    Mat4 result;
+    Matrix4 result;
 
     result.m_data[0] = scale.x;
     result.m_data[5] = scale.y;
@@ -111,20 +111,20 @@ Mat4 Mat4::scale(const Vec3 & scale){
 
 }
 
-Mat4 Mat4::rotate(const float & angle, const Vec3 & axis){
+Matrix4 Matrix4::rotate(const float & angle, const Vector3 & axis){
 
-    Vec3 normalized = axis.normalize();
+    Vector3 normalized = axis.normalize();
 
     constexpr float deg2rad = 3.1415926535f/180.0f;
 
     float angleInRad = angle * deg2rad;
 
-    Mat4 result;
+    Matrix4 result;
 
     float c = cos(angleInRad);
     float s = sin(angleInRad);
 
-    result.m_data[0] = normalized.x * normalized.y * (1 - c) + c;
+    result.m_data[0] = normalized.x * normalized.x * (1 - c) + c;
     result.m_data[1] = normalized.x * normalized.y * (1 - c) - s * normalized.z;
     result.m_data[2] = normalized.x * normalized.z * (1 - c) + s * normalized.y;
 

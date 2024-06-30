@@ -1,6 +1,8 @@
-#include "geometry.h"
+#include "mesh.h"
 
-Geometry::Geometry(){
+GLuint Mesh::MeshID = 1;
+
+Mesh::Mesh(){
 
     glGenVertexArrays(1, &m_vao);
     this->m_vbo = 0;
@@ -9,13 +11,14 @@ Geometry::Geometry(){
     this->m_numIndices = 0;
     this->m_numVertices = 0;
     this->m_mode = GL_TRIANGLES;
+    this->m_id = MeshID++;
 }
 
-void Geometry::setRenderMode(GLenum mode){
+void Mesh::setRenderMode(GLenum mode){
     this->m_mode = mode;
 }
 
-void Geometry::setIndices(const std::vector<GLuint> & indices){
+void Mesh::setIndices(const std::vector<GLuint> & indices){
 
     if( indices.size() == 0)
         return;
@@ -34,7 +37,7 @@ void Geometry::setIndices(const std::vector<GLuint> & indices){
     glBindVertexArray(0);
 }
 
-void Geometry::setVertices(const std::vector<Vec3> & vertices){
+void Mesh::setVertices(const std::vector<Vector3> & vertices){
 
     if( vertices.size() == 0 )
         return;
@@ -48,7 +51,7 @@ void Geometry::setVertices(const std::vector<Vec3> & vertices){
 
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vec3), vertices.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vector3), vertices.data(), GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glEnableVertexAttribArray(0);
@@ -56,7 +59,24 @@ void Geometry::setVertices(const std::vector<Vec3> & vertices){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Geometry::setTexCoords(const std::vector<float> & coords){
+void Mesh::setNormals(const std::vector<Vector3> & normals){
+
+    glBindVertexArray(m_vao);
+
+    if( m_nbo != 0 )
+        glDeleteBuffers(1, &m_nbo);
+
+    glGenBuffers(1, &m_nbo);
+    glBindBuffer(GL_ARRAY_BUFFER, m_nbo);
+    glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Vector3), normals.data(), GL_STATIC_DRAW);
+
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Mesh::setTexCoords(const std::vector<float> & coords){
 
     if( coords.size() == 0 || coords.size()%2!=0)
         return;
@@ -77,7 +97,11 @@ void Geometry::setTexCoords(const std::vector<float> & coords){
 
 }
 
-void Geometry::render(){
+GLuint Mesh::getID() const{
+    return m_id;
+}
+
+void Mesh::render(){
 
     glBindVertexArray(m_vao);
 
@@ -93,7 +117,7 @@ void Geometry::render(){
 
 }
 
-Geometry::~Geometry(){
+Mesh::~Mesh(){
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ebo);

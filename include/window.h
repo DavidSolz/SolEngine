@@ -8,7 +8,6 @@
 #include <string>
 #include <functional>
 
-
 class Window{
 
 private:

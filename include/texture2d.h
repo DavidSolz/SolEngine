@@ -23,7 +23,9 @@ public:
 
     void setParam(const GLenum & param, const GLint & value);
 
-    void operator()();
+    void use() const;
+
+    GLuint operator()() const;
 
     ~Texture2D();
 };

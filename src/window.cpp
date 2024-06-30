@@ -49,7 +49,7 @@ void Window::update(){
         return;
 
     std::unordered_map<GLenum, const char *>::const_iterator it = errorMap.find(error);
-    std::cout<< "Error " << error << " : " << it->second << std::endl;
+    std::cerr<< "Error " << error << " : " << it->second << std::endl;
 
 }
 

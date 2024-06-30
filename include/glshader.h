@@ -6,8 +6,8 @@
 #include <unordered_map>
 #include <fstream>
 #include <iostream>
-#include "vec3.h"
-#include "mat4.h"
+#include "vector3.h"
+#include "matrix4.h"
 
 class GLShader {
 
@@ -32,9 +32,9 @@ public:
 
     void setUniform(const std::string & name, const GLint & value);
 
-    void setUniform(const std::string & name, const Vec3 & value);
+    void setUniform(const std::string & name, const Vector3 & value);
 
-    void setUniform(const std::string & name, const Mat4 & value);
+    void setUniform(const std::string & name, const Matrix4 & value);
 
     void link();
 

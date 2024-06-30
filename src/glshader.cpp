@@ -75,7 +75,7 @@ void GLShader::setUniform(const std::string & name, const GLint & value){
     glUniform1i(location, value);
 }
 
-void GLShader::setUniform(const std::string & name, const Vec3 & value){
+void GLShader::setUniform(const std::string & name, const Vector3 & value){
 
     GLint location = locateUniform(name);
 
@@ -85,7 +85,7 @@ void GLShader::setUniform(const std::string & name, const Vec3 & value){
     glUniform3fv(location, 1, (GLfloat*)&value);
 }
 
-void GLShader::setUniform(const std::string & name, const Mat4 & value){
+void GLShader::setUniform(const std::string & name, const Matrix4 & value){
 
     GLint location = locateUniform(name);
 
