@@ -1,6 +1,5 @@
 #include "mesh.h"
 
-GLuint Mesh::MeshID = 1;
 
 Mesh::Mesh(){
 
@@ -11,7 +10,6 @@ Mesh::Mesh(){
     this->m_numIndices = 0;
     this->m_numVertices = 0;
     this->m_mode = GL_TRIANGLES;
-    this->m_id = MeshID++;
 }
 
 void Mesh::setRenderMode(GLenum mode){
@@ -98,7 +96,7 @@ void Mesh::setTexCoords(const std::vector<float> & coords){
 }
 
 GLuint Mesh::getID() const{
-    return m_id;
+    return m_vao;
 }
 
 void Mesh::render(){

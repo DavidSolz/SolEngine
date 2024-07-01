@@ -8,8 +8,6 @@
 class Mesh{
 private:
 
-    static GLuint MeshID;
-
     GLuint m_vao;
     GLuint m_vbo;
     GLuint m_ebo;
@@ -20,8 +18,6 @@ private:
 
     GLuint m_numVertices;
     GLuint m_numIndices;
-
-    GLuint m_id;
 
 public:
 

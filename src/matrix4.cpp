@@ -45,7 +45,7 @@ Matrix4 Matrix4::operator*(const Matrix4 & matrix) const{
             float sum = 0.0f;
 
             for( int32_t k = 0; k < 4; k++ ){
-                sum += m_data[i* 4 + k] * matrix.m_data[k *4 + j];
+                sum += m_data[i * 4 + k] * matrix.m_data[k * 4 + j];
             }
 
             result.m_data[i * 4 + j] = sum;

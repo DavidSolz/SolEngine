@@ -1,5 +1,4 @@
 #include "include/window.h"
-#include "include/mesh.h"
 #include "include/glshader.h"
 #include "include/texture2d.h"
 #include "include/framebuffer.h"
@@ -33,8 +32,8 @@ int main(){
     backTexture.setParam(GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     backTexture.setParam(GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-    const int32_t width = 16;
-    const int32_t height = 16;
+    const int32_t width = 2;
+    const int32_t height = 2;
 
     std::vector<Vector3> vertices;
 
