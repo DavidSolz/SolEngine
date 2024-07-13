@@ -6,7 +6,8 @@ Window::Window(){
         exit(-1);
     }
 
-    m_window = NULL;
+    this->m_window = NULL;
+    this->bufferBits = GL_COLOR_BUFFER_BIT;
 }
 
 void Window::setResizeCallback(GLFWwindowsizefun callback){
@@ -18,6 +19,11 @@ void Window::setErrorCallback(GLFWerrorfun callback){
 }
 
 void Window::open(const int & width, const int & height, const std::string & title){
+
+    if( width <= 0 || height <= 0){
+        std::cerr << "Window width and height should be greater than zero" << std::endl;
+        return;
+    }
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
@@ -31,12 +37,19 @@ void Window::open(const int & width, const int & height, const std::string & tit
     glewExperimental = true;
     glewInit();
 
+    glfwSetWindowUserPointer(m_window, this);
+
     const GLubyte * device = glGetString(GL_RENDERER);
     const GLubyte * version = glGetString(GL_VERSION);
 
     std::cout << "Device : " << device << std::endl;
     std::cout << "OpenGL Version : " << version << std::endl;
 
+}
+
+void Window::updateFramebufferSize(){
+    glfwGetFramebufferSize(m_window, &m_width, &m_height);
+    glViewport(0, 0, m_width, m_height);
 }
 
 void Window::update(){
@@ -53,10 +66,18 @@ void Window::update(){
 
 }
 
-void Window::clearBuffers(GLenum bufferBits){
+int Window::getWindowWidth(){
+    return m_width;
+}
+
+int Window::getWindowHeight(){
+    return m_height;
+}
+
+void Window::clearBuffers(GLenum buffer){
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(bufferBits);
+    glClear( bufferBits | buffer );
 
 }
 

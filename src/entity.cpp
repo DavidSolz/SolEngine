@@ -1,6 +1,8 @@
 #include "entity.h"
 
-
+Entity::Entity(){
+    this->meshID = 0;
+}
 
 template<typename... Child>
 void Entity::addChild(const Child & ... child){

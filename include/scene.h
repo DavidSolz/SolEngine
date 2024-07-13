@@ -5,27 +5,30 @@
 #include "entity.h"
 
 #include <vector>
+#include <map>
 
 class Scene{
 
 private:
 
-    Entity m_world;
-
     std::vector<Mesh> m_meshes;
+
+    std::vector< Entity* > m_entities;
 
 public:
 
-    Scene() = default;
+    void addEntity(Entity & entity);
 
-    template<typename... T>
-    void addChild(const T & ... child);
+    void addEntities(std::vector<Entity> & entities);
 
-    template<typename... T>
-    void addMesh(const T & ... mesh);
+    void addMesh(Mesh & mesh);
+
+    void addMeshes(std::vector<Mesh> & meshes);
+
+    std::vector<Entity*>& getEntities();
+
+    std::vector<Mesh>& getMeshes();
 
 };
-
-
 
 #endif

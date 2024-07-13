@@ -1,15 +1,16 @@
 #include "mesh.h"
 
-
 Mesh::Mesh(){
 
-    glGenVertexArrays(1, &m_vao);
+    this->m_vao = 0;
     this->m_vbo = 0;
     this->m_ebo = 0;
     this->m_tbo = 0;
     this->m_numIndices = 0;
     this->m_numVertices = 0;
     this->m_mode = GL_TRIANGLES;
+
+    glGenVertexArrays(1, &m_vao);
 }
 
 void Mesh::setRenderMode(GLenum mode){
@@ -34,6 +35,7 @@ void Mesh::setIndices(const std::vector<GLuint> & indices){
 
     glBindVertexArray(0);
 }
+
 
 void Mesh::setVertices(const std::vector<Vector3> & vertices){
 
@@ -93,6 +95,36 @@ void Mesh::setTexCoords(const std::vector<float> & coords){
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+}
+
+Mesh Mesh::genQuad(const int & width, const int & height){
+
+    Mesh quad;
+
+    std::vector<Vector3> vertices = {
+        {-width*0.5f, -height*0.5f, 0.0f},
+        {-width*0.5f, height*0.5f, 0.0f},
+        {width*0.5f, height*0.5f, 0.0f},
+        {width*0.5f, -height*0.5f, 0.0f}
+    };
+
+    std::vector<GLuint> indices = {
+        0, 1, 2,
+        0, 2, 3
+    };
+
+    std::vector<float> texCoords = {
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f
+    };
+
+    quad.setVertices(vertices);
+    quad.setIndices(indices);
+    quad.setTexCoords(texCoords);
+
+    return quad;
 }
 
 GLuint Mesh::getID() const{

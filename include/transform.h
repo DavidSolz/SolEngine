@@ -1,14 +1,14 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "vector3.h"
+#include "quaternion.h"
 #include "matrix4.h"
 
 class Transform {
 
 private:
-    Vector3 m_position = {0.0f, 0.0f, 0.0f};
-    Vector3 m_rotation = {0.0f, 0.0f, 0.0f};
+    Vector3 m_position;
+    Quaternion m_rotation;
     Vector3 m_scale = {1.0f, 1.0f, 1.0f};
 
     Matrix4 m_modelMatrix = Matrix4();
@@ -31,7 +31,7 @@ public:
 
     Vector3& getLocalPosition();
 
-    Vector3& getLocalRotation();
+    Quaternion& getLocalRotation();
 
     Vector3& getLocalScale();
 

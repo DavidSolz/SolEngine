@@ -3,18 +3,22 @@
 
 #include "transform.h"
 
+#include <GL/glew.h>
 #include <list>
+#include <memory>
 
 class Entity{
 
 public:
 
     std::list<std::unique_ptr<Entity>> children;
-    std::unique_ptr<Entity> parent = nullptr;
+    std::unique_ptr<Entity> parent;
 
     Transform transform;
 
-    unsigned int meshID = 0;
+    GLuint meshID = 0;
+
+    Entity();
 
     template<typename... Child>
     void addChild(const Child & ... child);

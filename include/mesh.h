@@ -33,6 +33,8 @@ public:
 
     void setTexCoords(const std::vector<float> & coords);
 
+    static Mesh genQuad(const int & width, const int & height);
+
     GLuint getID() const;
 
     void render();

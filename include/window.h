@@ -6,7 +6,6 @@
 #include <unordered_map>
 #include <iostream>
 #include <string>
-#include <functional>
 
 class Window{
 
@@ -25,6 +24,10 @@ private:
     };
 
     GLFWwindow * m_window;
+    GLenum bufferBits;
+
+    int m_width;
+    int m_height;
 
 public:
 
@@ -36,7 +39,13 @@ public:
 
     void setErrorCallback(GLFWerrorfun callback);
 
-    void clearBuffers(GLenum bufferBits);
+    void clearBuffers(GLenum buffer = 0);
+
+    void updateFramebufferSize();
+
+    int getWindowWidth();
+
+    int getWindowHeight();
 
     bool shouldClose();
 

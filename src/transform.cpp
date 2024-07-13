@@ -3,8 +3,7 @@
 Matrix4 Transform::getLocalModelMatrix(){
 
     Matrix4 translation = Matrix4::translate(m_position);
-    // TODO
-    Matrix4 rotation = Matrix4();
+    Matrix4 rotation = Matrix4::rotate(m_rotation.w, Vector3(m_rotation.x, m_rotation.y, m_rotation.z));
     Matrix4 scale = Matrix4::scale(m_scale);
 
     return translation * rotation * scale;
@@ -27,7 +26,7 @@ void Transform::setLocalPosition(const Vector3 & position){
 }
 
 void Transform::setLocalRotation(const Vector3 & rotation){
-    this->m_rotation = rotation;
+    this->m_rotation = Quaternion::ToQuaternion(rotation);
     this->m_isDirty = true;
 }
 
@@ -40,7 +39,7 @@ Vector3& Transform::getLocalPosition(){
     return m_position;
 }
 
-Vector3& Transform::getLocalRotation(){
+Quaternion& Transform::getLocalRotation(){
     return m_rotation;
 }
 
