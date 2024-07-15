@@ -1,7 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-struct color {
+struct Color {
     unsigned char r;
     unsigned char g;
     unsigned char b;

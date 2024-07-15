@@ -5,23 +5,22 @@
 #include <vector>
 #include "color.h"
 
-class Texture2D{
+class Texture2D
+{
 
 private:
-
     GLuint m_texture;
     GLuint m_width;
     GLuint m_height;
 
 public:
-
     Texture2D();
 
-    void create(const std::vector<color> & colors, const GLuint & width, const GLuint & height);
+    void create(const std::vector<Color> &colors, const GLuint &width, const GLuint &height);
 
-    void update(const std::vector<color> & colors, const GLuint & width, const GLuint & height);
+    void update(const std::vector<Color> &colors, const GLuint &width, const GLuint &height);
 
-    void setParam(const GLenum & param, const GLint & value);
+    void setParam(const GLenum &param, const GLint &value);
 
     void use() const;
 
