@@ -70,6 +70,8 @@ void SceneManager::remove(const unsigned int &id)
         m_currentScene = nullptr;
 
     it->second->onDestroy();
+    m_unusedID.emplace_back(it->first);
+
     m_scenes.erase(it);
 }
 
