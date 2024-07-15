@@ -1,5 +1,5 @@
 #include "window.h"
-#include "texture2d.h"
+#include "scenemanager.h"
 
 void windowErrorCallback(int code, const char *description);
 
