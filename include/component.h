@@ -12,7 +12,9 @@ protected:
     std::shared_ptr<GameObject> m_parent;
 
 public:
-    Component(std::shared_ptr<GameObject> parent) : m_parent(parent){};
+    Component(std::shared_ptr<GameObject> parent) : m_parent(parent) {}
+
+    virtual ~Component() {}
 
     virtual void awake() {}
 

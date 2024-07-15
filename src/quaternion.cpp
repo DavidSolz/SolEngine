@@ -1,41 +1,45 @@
 #include "quaternion.h"
 
-
-Quaternion::Quaternion(const float & x, const float & y, const float & z, const float & w){
+Quaternion::Quaternion(const float &x, const float &y, const float &z, const float &w)
+{
     this->x = x;
     this->y = y;
     this->z = z;
     this->w = w;
 }
 
-Quaternion::Quaternion(){
+Quaternion::Quaternion()
+{
     this->x = 0.0f;
     this->y = 0.0f;
     this->z = 0.0f;
     this->w = 1.0f;
 }
 
-
-float Quaternion::Magnitude() const{
-    return sqrtf(x*x + y*y + z*z);
+float Quaternion::Magnitude() const
+{
+    return sqrtf(x * x + y * y + z * z);
 }
 
-float Quaternion::Dot(const Quaternion & a, const Quaternion & b){
+float Quaternion::Dot(const Quaternion &a, const Quaternion &b)
+{
     return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 }
 
-Quaternion Quaternion::Normalize(){
+Quaternion Quaternion::Normalize()
+{
     float magnitude = this->Magnitude();
 
-    if( magnitude <= 1e-6f )
+    if (magnitude <= 1e-6f)
         magnitude = 1.0f;
 
-    return Quaternion(x/magnitude, y/magnitude, z/magnitude, w/magnitude);
+    return Quaternion(x / magnitude, y / magnitude, z / magnitude, w / magnitude);
 }
 
-Quaternion Quaternion::ToQuaternion(const Vector3 & euler){
+Quaternion Quaternion::ToQuaternion(const Vector3 &euler)
+{
 
-     Quaternion q;
+    Quaternion q;
 
     float cr = cos(euler.x * 0.5);
     float sr = sin(euler.x * 0.5);
@@ -50,10 +54,10 @@ Quaternion Quaternion::ToQuaternion(const Vector3 & euler){
     q.z = cr * cp * sy - sr * sp * cy;
 
     return q;
-
 }
 
-Vector3 Quaternion::ToEulerAngles(const Quaternion & q){
+Vector3 Quaternion::ToEulerAngles(const Quaternion &q)
+{
     Vector3 angles;
 
     // roll (x-axis rotation)
@@ -74,19 +78,21 @@ Vector3 Quaternion::ToEulerAngles(const Quaternion & q){
     return angles;
 }
 
-Quaternion Quaternion::operator+(const Quaternion & q) const{
+Quaternion Quaternion::operator+(const Quaternion &q) const
+{
     return Quaternion(x + q.x, y + q.y, z + q.z, w + q.w);
 }
 
-Quaternion Quaternion::operator-(const Quaternion & q) const{
+Quaternion Quaternion::operator-(const Quaternion &q) const
+{
     return Quaternion(x - q.x, y - q.y, z - q.z, w - q.w);
 }
 
-Quaternion Quaternion::operator*(const Quaternion& q) const {
+Quaternion Quaternion::operator*(const Quaternion &q) const
+{
     return Quaternion(
         w * q.w - x * q.x - y * q.y - z * q.z,
         w * q.x + x * q.w + y * q.z - z * q.y,
         w * q.y - x * q.z + y * q.w + z * q.x,
-        w * q.z + x * q.y - y * q.x + z * q.w
-    );
+        w * q.z + x * q.y - y * q.x + z * q.w);
 }

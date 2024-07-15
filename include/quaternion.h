@@ -4,13 +4,12 @@
 #include <math.h>
 #include "vector3.h"
 
-class Quaternion{
+class Quaternion
+{
 private:
-
     float Magnitude() const;
 
 public:
-
     float x;
     float y;
     float z;
@@ -18,22 +17,23 @@ public:
 
     Quaternion();
 
-    Quaternion(const float & x, const float & y, const float & z, const float & w);
+    Quaternion(const float &x, const float &y, const float &z, const float &w);
 
     Quaternion Normalize();
 
-    static float Dot(const Quaternion & a, const Quaternion & b);
+    static float Dot(const Quaternion &a, const Quaternion &b);
 
-    static Quaternion ToQuaternion(const Vector3 & euler);
+    static Quaternion ToQuaternion(const Vector3 &euler);
 
-    static Vector3 ToEulerAngles(const Quaternion & q);
+    static Vector3 ToEulerAngles(const Quaternion &q);
 
-    Quaternion operator+(const Quaternion & q) const;
+    Quaternion operator+(const Quaternion &q) const;
 
-    Quaternion operator-(const Quaternion & q) const;
+    Quaternion operator-(const Quaternion &q) const;
 
-    Quaternion operator*(const Quaternion& q) const;
+    Quaternion operator*(const Quaternion &q) const;
 
+    Quaternion operator/(const Quaternion &q) const = delete;
 };
 
 #endif
