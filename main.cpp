@@ -1,5 +1,4 @@
-#include "window.h"
-#include "scenemanager.h"
+#include "application.h"
 
 void windowErrorCallback(int code, const char *description);
 
@@ -11,12 +10,9 @@ int main()
     ctx.open(800, 600, "Application");
     ctx.setErrorCallback(windowErrorCallback);
 
-    while (!ctx.shouldClose())
-    {
-        ctx.updateFramebufferSize();
-        ctx.update();
-        ctx.clearBuffers();
-    }
+    Application app(std::make_shared<Window>(ctx));
+
+    app.loop();
 
     return 0;
 }

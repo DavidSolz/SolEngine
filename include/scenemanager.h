@@ -19,7 +19,7 @@ private:
 public:
     SceneManager();
 
-    void processInput(Window &window);
+    void processInput(std::shared_ptr<Window> window);
 
     void update(const float &deltaTime);
 
