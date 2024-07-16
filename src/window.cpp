@@ -1,26 +1,32 @@
 #include "window.h"
 
-Window::Window(){
+Window::Window()
+{
 
-    if( glfwInit() == GLFW_FALSE ){
+    if (glfwInit() == GLFW_FALSE)
+    {
         exit(-1);
     }
 
     this->m_window = NULL;
-    this->bufferBits = GL_COLOR_BUFFER_BIT;
+    this->m_bufferBits = GL_COLOR_BUFFER_BIT;
 }
 
-void Window::setResizeCallback(GLFWwindowsizefun callback){
+void Window::setResizeCallback(GLFWwindowsizefun callback)
+{
     glfwSetWindowSizeCallback(m_window, callback);
 }
 
-void Window::setErrorCallback(GLFWerrorfun callback){
+void Window::setErrorCallback(GLFWerrorfun callback)
+{
     glfwSetErrorCallback(callback);
 }
 
-void Window::open(const int & width, const int & height, const std::string & title){
+void Window::open(const int &width, const int &height, const std::string &title)
+{
 
-    if( width <= 0 || height <= 0){
+    if (width <= 0 || height <= 0)
+    {
         std::cerr << "Window width and height should be greater than zero" << std::endl;
         return;
     }
@@ -39,52 +45,56 @@ void Window::open(const int & width, const int & height, const std::string & tit
 
     glfwSetWindowUserPointer(m_window, this);
 
-    const GLubyte * device = glGetString(GL_RENDERER);
-    const GLubyte * version = glGetString(GL_VERSION);
+    const GLubyte *device = glGetString(GL_RENDERER);
+    const GLubyte *version = glGetString(GL_VERSION);
 
     std::cout << "Device : " << device << std::endl;
     std::cout << "OpenGL Version : " << version << std::endl;
-
 }
 
-void Window::updateFramebufferSize(){
+void Window::updateFramebufferSize()
+{
     glfwGetFramebufferSize(m_window, &m_width, &m_height);
     glViewport(0, 0, m_width, m_height);
 }
 
-void Window::update(){
+void Window::update()
+{
     glfwPollEvents();
     glfwSwapBuffers(m_window);
 
     GLenum error = glGetError();
 
-    if( error == GL_NO_ERROR )
+    if (error == GL_NO_ERROR)
         return;
 
     std::unordered_map<GLenum, const char *>::const_iterator it = errorMap.find(error);
-    std::cerr<< "Error " << error << " : " << it->second << std::endl;
-
+    std::cerr << "Error " << error << " : " << it->second << std::endl;
 }
 
-int Window::getWindowWidth(){
+int Window::getWindowWidth()
+{
     return m_width;
 }
 
-int Window::getWindowHeight(){
+int Window::getWindowHeight()
+{
     return m_height;
 }
 
-void Window::clearBuffers(GLenum buffer){
+void Window::clearBuffers(GLenum buffer)
+{
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear( bufferBits | buffer );
-
+    glClear(m_bufferBits | buffer);
 }
 
-bool Window::shouldClose(){
+bool Window::shouldClose() const
+{
     return glfwWindowShouldClose(m_window);
 }
 
-Window::~Window(){
+Window::~Window()
+{
     glfwTerminate();
 }

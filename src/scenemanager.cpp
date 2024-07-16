@@ -5,7 +5,7 @@ SceneManager::SceneManager()
     this->m_sceneID = 0;
 }
 
-void SceneManager::processInput(std::shared_ptr<Window> window)
+void SceneManager::processInput(Window &window)
 {
     if (m_currentScene == nullptr)
         return;

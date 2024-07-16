@@ -1,23 +1,35 @@
 #include "application.h"
 
+Application::Application(const std::string &title, const uint32_t &width, const uint32_t &height)
+{
+    this->m_deltaTime = m_timer.restart();
+    this->m_window.open(width, height, title);
+    setFramerate();
+}
+
+void Application::setFramerate(const uint32_t &fps)
+{
+    uint32_t clampedRate = fps < 1 ? 1 : fps;
+    m_targetFrameDuration = 1.0 / clampedRate;
+}
+
 void Application::loop()
 {
 
     while (isRunning())
     {
-
-        m_deltaTime = 1.0f; // TODO
-
         processInput();
         update();
         fixedUpdate();
         draw();
+
+        m_deltaTime = m_timer.restart();
     }
 }
 
 bool Application::isRunning() const
 {
-    return !m_window->shouldClose();
+    return !m_window.shouldClose();
 }
 
 void Application::processInput()
@@ -27,10 +39,18 @@ void Application::processInput()
 
 void Application::update()
 {
-    m_window->updateFramebufferSize();
-    m_window->update();
-    m_window->clearBuffers();
+    m_window.updateFramebufferSize();
+    m_window.update();
+    m_window.clearBuffers();
     m_sceneManager.update(m_deltaTime);
+
+    const auto elapsed = m_timer.getElapsed();
+
+    if (elapsed < m_targetFrameDuration)
+    {
+        const double sleepTime = m_targetFrameDuration - elapsed;
+        m_timer.sleepForSeconds(sleepTime);
+    }
 }
 
 void Application::fixedUpdate()

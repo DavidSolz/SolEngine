@@ -2,16 +2,18 @@
 #define APPLICATION_H
 
 #include "window.h"
+#include "timer.h"
 #include "scenemanager.h"
 
 class Application
 {
 private:
-    std::shared_ptr<Window> m_window;
-
     float m_deltaTime;
+    float m_targetFrameDuration;
 
+    Window m_window;
     SceneManager m_sceneManager;
+    Timer m_timer;
 
     void processInput();
 
@@ -24,7 +26,9 @@ private:
     bool isRunning() const;
 
 public:
-    Application(std::shared_ptr<Window> window) : m_window(window) {}
+    Application(const std::string &title = "Application", const uint32_t &width = 800, const uint32_t &height = 600);
+
+    void setFramerate(const uint32_t &fps = 60);
 
     void loop();
 };

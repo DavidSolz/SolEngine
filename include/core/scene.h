@@ -15,7 +15,7 @@ public:
 
     virtual void onDeactivate() = 0;
 
-    virtual void processInput([[maybe_unused]] std::shared_ptr<Window> window) {}
+    virtual void processInput([[maybe_unused]] Window &window) {}
 
     virtual void update([[maybe_unused]] const float &deltaTime) {}
 
