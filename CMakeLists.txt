@@ -9,7 +9,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Include directories
-include_directories(${PROJECT_SOURCE_DIR}/include)
+include_directories(${PROJECT_SOURCE_DIR}/include/core)
+include_directories(${PROJECT_SOURCE_DIR}/include/stb)
+include_directories(${PROJECT_SOURCE_DIR}/include/rapidxml)
 
 # Add the source files
 file(GLOB_RECURSE SOURCES "src/*.cpp")
@@ -35,9 +37,9 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Optionally, you might want to specify some compiler flags
-target_compile_options(program PRIVATE 
-    -Wall 
-    -Wextra 
+target_compile_options(program PRIVATE
+    -Wall
+    -Wextra
     -ggdb
 )
 
