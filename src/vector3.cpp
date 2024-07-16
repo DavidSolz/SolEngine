@@ -17,7 +17,7 @@ Vector3 Vector3::normalize() const{
 }
 
 float Vector3::magnitude() const{
-    return std::sqrtf(magnitudeSqr());
+    return std::sqrt(magnitudeSqr());
 }
 
 float Vector3::magnitudeSqr() const{

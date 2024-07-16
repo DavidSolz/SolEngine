@@ -2,8 +2,10 @@
 
 .vscode/
 obj/
+build/
 
 
 # Files
 
-program
+*.out
+*.exe

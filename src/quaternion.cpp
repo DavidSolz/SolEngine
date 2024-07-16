@@ -68,7 +68,7 @@ Vector3 Quaternion::ToEulerAngles(const Quaternion &q)
     // pitch (y-axis rotation)
     float sinp = sqrtf(1 + 2 * (q.w * q.y - q.x * q.z));
     float cosp = sqrtf(1 - 2 * (q.w * q.y - q.x * q.z));
-    angles.y = 2 * atan2(sinp, cosp) - M_PI / 2;
+    angles.y = 2 * atan2(sinp, cosp) - 3.1415926535f / 2;
 
     // yaw (z-axis rotation)
     float siny_cosp = 2 * (q.w * q.z + q.x * q.y);
