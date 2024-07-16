@@ -1,62 +1,63 @@
 #include "texture2d.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 Texture2D::Texture2D()
 {
-
-    this->m_texture = 0;
+    glGenTextures(1, &m_texture);
 }
 
-void Texture2D::create(const std::vector<Color> &colors, const GLuint &width, const GLuint &height)
+bool Texture2D::loadFromFile(const std::string &filepath)
 {
 
-    this->m_width = width;
-    this->m_height = height;
+    int width, height, nrChannels;
+    unsigned char *data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
 
-    if (m_texture != 0)
-        glDeleteTextures(1, &m_texture);
-
-    glGenTextures(1, &m_texture);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
-
-    if (colors.size() > 0)
+    if (data != nullptr)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, colors.data());
+        m_width = width;
+        m_height = height;
+
+        if (nrChannels == 1)
+            m_format = GL_RED;
+        else if (nrChannels == 3)
+            m_format = GL_RGB;
+        else if (nrChannels == 4)
+            m_format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, m_texture);
+        glTexImage2D(GL_TEXTURE_2D, 0, m_format, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, data);
+
+        stbi_image_free(data);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        return true;
     }
     else
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+        std::cerr << "Failed to load texture: " << filepath << std::endl;
+        return false;
     }
+}
 
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+void Texture2D::create(const GLuint &width, const GLuint &height, const GLenum &format)
+{
+    m_width = width;
+    m_height = height;
+    m_format = format;
 
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glTexImage2D(GL_TEXTURE_2D, 0, m_format, width, height, 0, m_format, GL_UNSIGNED_BYTE, nullptr);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::update(const std::vector<Color> &colors, const GLuint &width, const GLuint &height)
+GLenum Texture2D::getFormat() const
 {
-
-    if ((colors.size() != width * height) || (m_width != width) || (m_height != height))
-        return;
-
-    if (m_texture == 0)
-        glGenTextures(1, &m_texture);
-
-    glBindTexture(GL_TEXTURE_2D, m_texture);
-
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, colors.data());
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
+    return m_format;
 }
 
 void Texture2D::setParam(const GLenum &param, const GLint &value)
 {
-
-    if (m_texture == 0)
-        return;
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
@@ -65,14 +66,9 @@ void Texture2D::setParam(const GLenum &param, const GLint &value)
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-void Texture2D::use() const
+void Texture2D::bind() const
 {
     glBindTexture(GL_TEXTURE_2D, m_texture);
-}
-
-GLuint Texture2D::operator()() const
-{
-    return m_texture;
 }
 
 Texture2D::~Texture2D()

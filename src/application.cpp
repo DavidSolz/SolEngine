@@ -5,6 +5,10 @@ Application::Application(const std::string &title, const uint32_t &width, const 
     this->m_deltaTime = m_timer.restart();
     this->m_window.open(width, height, title);
     setFramerate();
+
+    m_testscene = std::make_shared<TestScene>();
+    auto m_t = m_sceneManager.add(m_testscene);
+    m_sceneManager.transiteTo(m_t);
 }
 
 void Application::setFramerate(const uint32_t &fps)

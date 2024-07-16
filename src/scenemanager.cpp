@@ -55,7 +55,7 @@ unsigned int SceneManager::add(std::shared_ptr<Scene> scene)
     auto it = m_scenes.insert(std::make_pair(id, scene));
     it.first->second->onCreate();
 
-    return m_sceneID;
+    return id;
 }
 
 void SceneManager::remove(const unsigned int &id)

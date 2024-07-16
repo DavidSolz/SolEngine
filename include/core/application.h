@@ -3,6 +3,7 @@
 
 #include "window.h"
 #include "timer.h"
+#include "testscene.h"
 #include "scenemanager.h"
 
 class Application
@@ -10,6 +11,8 @@ class Application
 private:
     float m_deltaTime;
     float m_targetFrameDuration;
+
+    std::shared_ptr<TestScene> m_testscene;
 
     Window m_window;
     SceneManager m_sceneManager;
