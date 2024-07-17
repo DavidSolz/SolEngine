@@ -14,7 +14,7 @@ public:
 
     void load(const std::string &filepath);
 
-    void draw() override;
+    void draw(GLShader &shader) override;
 };
 
 #endif

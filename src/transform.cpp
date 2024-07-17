@@ -2,7 +2,6 @@
 
 Matrix4 Transform::getLocalModelMatrix()
 {
-
     Matrix4 translation = Matrix4::translate(m_position);
     Matrix4 rotation = Matrix4::rotate(m_rotation.w, Vector3(m_rotation.x, m_rotation.y, m_rotation.z));
     Matrix4 scale = Matrix4::scale(m_scale);
@@ -38,6 +37,15 @@ void Transform::setLocalScale(const Vector3 &scale)
 {
     this->m_scale = scale;
     this->m_isDirty = true;
+}
+
+void Transform::update([[maybe_unused]] const float &deltaTime)
+{
+
+    if (m_isDirty == false)
+        return;
+
+    computeModelMatrix();
 }
 
 Vector3 &Transform::getLocalPosition()

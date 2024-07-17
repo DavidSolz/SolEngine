@@ -7,7 +7,6 @@ GameObject::GameObject()
 
 void GameObject::awake()
 {
-
     for (auto &component : m_components)
         component->awake();
 }
@@ -30,8 +29,8 @@ void GameObject::fixedUpdate(const float &deltaTime)
         component->fixedUpdate(deltaTime);
 }
 
-void GameObject::draw()
+void GameObject::draw(GLShader &shader)
 {
     for (auto &component : m_components)
-        component->draw();
+        component->draw(shader);
 }

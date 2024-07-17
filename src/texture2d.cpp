@@ -20,14 +20,30 @@ bool Texture2D::loadFromFile(const std::string &filepath)
         m_height = height;
 
         if (nrChannels == 1)
+        {
             m_format = GL_RED;
+        }
         else if (nrChannels == 3)
+        {
             m_format = GL_RGB;
+        }
         else if (nrChannels == 4)
+        {
             m_format = GL_RGBA;
+        }
+        else
+        {
+            std::cerr << "Unsupported number of channels: " << nrChannels << std::endl;
+            stbi_image_free(data);
+            return false;
+        }
 
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glBindTexture(GL_TEXTURE_2D, m_texture);
         glTexImage2D(GL_TEXTURE_2D, 0, m_format, m_width, m_height, 0, m_format, GL_UNSIGNED_BYTE, data);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         stbi_image_free(data);
         glBindTexture(GL_TEXTURE_2D, 0);

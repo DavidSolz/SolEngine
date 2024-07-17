@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "glshader.h"
+
 class GameObject;
 
 class Component
@@ -24,7 +26,7 @@ public:
 
     virtual void fixedUpdate([[maybe_unused]] const float &deltaTime) {}
 
-    virtual void draw() {}
+    virtual void draw([[maybe_unused]]GLShader &shader) {}
 };
 
 #endif

@@ -8,6 +8,7 @@
 
 #include "component.h"
 #include "transform.h"
+#include "glshader.h"
 
 class GameObject
 {
@@ -26,7 +27,7 @@ public:
 
     void fixedUpdate(const float &deltaTime);
 
-    void draw();
+    void draw(GLShader &shader);
 
     template <typename T>
     std::shared_ptr<T> addComponent()

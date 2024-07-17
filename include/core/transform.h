@@ -32,6 +32,8 @@ public:
 
     void setLocalScale(const Vector3 &scale);
 
+    void update([[maybe_unused]] const float &deltaTime) override;
+
     Vector3 &getLocalPosition();
 
     Quaternion &getLocalRotation();

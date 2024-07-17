@@ -1,6 +1,7 @@
 #include "mesh.h"
 
-Mesh::Mesh(){
+Mesh::Mesh()
+{
 
     this->m_vao = 0;
     this->m_vbo = 0;
@@ -13,20 +14,22 @@ Mesh::Mesh(){
     glGenVertexArrays(1, &m_vao);
 }
 
-void Mesh::setRenderMode(GLenum mode){
+void Mesh::setRenderMode(GLenum mode)
+{
     this->m_mode = mode;
 }
 
-void Mesh::setIndices(const std::vector<GLuint> & indices){
+void Mesh::setIndices(const std::vector<GLuint> &indices)
+{
 
-    if( indices.size() == 0)
+    if (indices.size() == 0)
         return;
 
     this->m_numIndices = indices.size();
 
     glBindVertexArray(m_vao);
 
-    if( m_ebo != 0 )
+    if (m_ebo != 0)
         glDeleteBuffers(1, &m_ebo);
 
     glGenBuffers(1, &m_ebo);
@@ -36,17 +39,17 @@ void Mesh::setIndices(const std::vector<GLuint> & indices){
     glBindVertexArray(0);
 }
 
+void Mesh::setVertices(const std::vector<Vector3> &vertices)
+{
 
-void Mesh::setVertices(const std::vector<Vector3> & vertices){
-
-    if( vertices.size() == 0 )
+    if (vertices.size() == 0)
         return;
 
     this->m_numVertices = vertices.size();
 
     glBindVertexArray(m_vao);
 
-    if( m_vbo != 0 )
+    if (m_vbo != 0)
         glDeleteBuffers(1, &m_vbo);
 
     glGenBuffers(1, &m_vbo);
@@ -59,11 +62,12 @@ void Mesh::setVertices(const std::vector<Vector3> & vertices){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::setNormals(const std::vector<Vector3> & normals){
+void Mesh::setNormals(const std::vector<Vector3> &normals)
+{
 
     glBindVertexArray(m_vao);
 
-    if( m_nbo != 0 )
+    if (m_nbo != 0)
         glDeleteBuffers(1, &m_nbo);
 
     glGenBuffers(1, &m_nbo);
@@ -76,14 +80,15 @@ void Mesh::setNormals(const std::vector<Vector3> & normals){
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::setTexCoords(const std::vector<float> & coords){
+void Mesh::setTexCoords(const std::vector<float> &coords)
+{
 
-    if( coords.size() == 0 || coords.size()%2!=0)
+    if (coords.size() == 0 || coords.size() % 2 != 0)
         return;
 
     glBindVertexArray(m_vao);
 
-    if( m_vbo != 0 )
+    if (m_vbo != 0)
         glDeleteBuffers(1, &m_tbo);
 
     glGenBuffers(1, &m_tbo);
@@ -94,31 +99,28 @@ void Mesh::setTexCoords(const std::vector<float> & coords){
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-
 }
 
-Mesh Mesh::genQuad(const int & width, const int & height){
+Mesh Mesh::genQuad(const int &width, const int &height)
+{
 
     Mesh quad;
 
     std::vector<Vector3> vertices = {
-        {-width*0.5f, -height*0.5f, 0.0f},
-        {-width*0.5f, height*0.5f, 0.0f},
-        {width*0.5f, height*0.5f, 0.0f},
-        {width*0.5f, -height*0.5f, 0.0f}
-    };
+        {-width * 0.5f, -height * 0.5f, 0.0f},
+        {-width * 0.5f, height * 0.5f, 0.0f},
+        {width * 0.5f, height * 0.5f, 0.0f},
+        {width * 0.5f, -height * 0.5f, 0.0f}};
 
     std::vector<GLuint> indices = {
         0, 1, 2,
-        0, 2, 3
-    };
+        0, 2, 3};
 
     std::vector<float> texCoords = {
         0.0f, 0.0f,
         0.0f, 1.0f,
         1.0f, 1.0f,
-        1.0f, 0.0f
-    };
+        1.0f, 0.0f};
 
     quad.setVertices(vertices);
     quad.setIndices(indices);
@@ -127,27 +129,32 @@ Mesh Mesh::genQuad(const int & width, const int & height){
     return quad;
 }
 
-GLuint Mesh::getID() const{
+GLuint Mesh::getID() const
+{
     return m_vao;
 }
 
-void Mesh::render(){
+void Mesh::render()
+{
 
     glBindVertexArray(m_vao);
 
-    if( m_numIndices > 0 ){
+    if (m_numIndices > 0)
+    {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
         glDrawElements(m_mode, m_numIndices, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    }else{
+    }
+    else
+    {
         glDrawArrays(m_mode, 0, m_numVertices);
     }
 
     glBindVertexArray(0);
-
 }
 
-Mesh::~Mesh(){
+Mesh::~Mesh()
+{
     glDeleteVertexArrays(1, &m_vao);
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ebo);

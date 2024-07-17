@@ -5,7 +5,7 @@ void Sprite::load(const std::string &filepath)
     m_texture.loadFromFile(filepath);
 }
 
-void Sprite::draw()
+void Sprite::draw(GLShader &shader)
 {
     m_texture.bind();
 }
