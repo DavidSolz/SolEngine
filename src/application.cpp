@@ -22,7 +22,7 @@ void Application::loop()
 
     while (isRunning())
     {
-        processInput();
+        Input::update(m_window);
         update();
         fixedUpdate();
         draw();
@@ -36,11 +36,6 @@ bool Application::isRunning() const
     return !m_window.shouldClose();
 }
 
-void Application::processInput()
-{
-    m_sceneManager.processInput(m_window);
-}
-
 void Application::update()
 {
     m_window.updateFramebufferSize();
@@ -49,12 +44,8 @@ void Application::update()
     m_sceneManager.update(m_deltaTime);
 
     const auto elapsed = m_timer.getElapsed();
-
-    if (elapsed < m_targetFrameDuration)
-    {
-        const double sleepTime = m_targetFrameDuration - elapsed;
-        m_timer.sleepForSeconds(sleepTime);
-    }
+    const double sleepTime = std::max(m_targetFrameDuration - elapsed, 0.0);
+    m_timer.sleepForSeconds(sleepTime);
 }
 
 void Application::fixedUpdate()

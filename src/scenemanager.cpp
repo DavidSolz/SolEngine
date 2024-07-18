@@ -5,14 +5,6 @@ SceneManager::SceneManager()
     this->m_sceneID = 0;
 }
 
-void SceneManager::processInput(Window &window)
-{
-    if (m_currentScene == nullptr)
-        return;
-
-    m_currentScene->processInput(window);
-}
-
 void SceneManager::update(const float &deltaTime)
 {
     if (m_currentScene == nullptr)

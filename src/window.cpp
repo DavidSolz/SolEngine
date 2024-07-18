@@ -52,6 +52,26 @@ void Window::open(const int &width, const int &height, const std::string &title)
     std::cout << "OpenGL Version : " << version << std::endl;
 }
 
+void Window::setKeyCallback(GLFWkeyfun callback)
+{
+    glfwSetKeyCallback(m_window, callback);
+}
+
+void Window::setButtonCallback(GLFWmousebuttonfun callback)
+{
+    glfwSetMouseButtonCallback(m_window, callback);
+}
+
+bool Window::isKeyPressed(const unsigned int &key) const
+{
+    return glfwGetKey(m_window, key) == GLFW_PRESS;
+}
+
+bool Window::isButtonPressed(const unsigned int &button) const
+{
+    return glfwGetMouseButton(m_window, button) == GLFW_PRESS;
+}
+
 void Window::updateFramebufferSize()
 {
     glfwGetFramebufferSize(m_window, &m_width, &m_height);

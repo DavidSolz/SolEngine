@@ -19,8 +19,6 @@ private:
 public:
     SceneManager();
 
-    void processInput(Window &window);
-
     void update(const float &deltaTime);
 
     void fixedUpdate(const float &deltaTime);

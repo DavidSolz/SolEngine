@@ -37,9 +37,17 @@ public:
 
     void setErrorCallback(GLFWerrorfun callback);
 
+    void setKeyCallback(GLFWkeyfun callback);
+
+    void setButtonCallback(GLFWmousebuttonfun callback);
+
     void clearBuffers(GLenum buffer = 0);
 
     void updateFramebufferSize();
+
+    bool isKeyPressed(const unsigned int &key) const;
+
+    bool isButtonPressed(const unsigned int &button) const;
 
     int getWindowWidth();
 

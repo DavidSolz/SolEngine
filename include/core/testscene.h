@@ -6,7 +6,9 @@
 #include "gameobject.h"
 #include "scene.h"
 #include "glshader.h"
+#include "window.h"
 
+#include "input.h"
 #include "resourceloader.hpp"
 
 class TestScene : public Scene
@@ -55,17 +57,34 @@ public:
     {
     }
 
-    void processInput([[maybe_unused]] Window &window) override
-    {
-    }
-
     void update(const float &deltaTime) override
     {
         static float accumulatedTime;
+        static bool lastPressed = false;
+        static int counter = 0;
+
         m_object.transform->setLocalPosition(Vector3(std::cos(accumulatedTime), 0, 0));
         m_object.update(deltaTime);
 
         accumulatedTime += deltaTime;
+
+        bool isPressed = Input::getKeyDown(GLFW_KEY_SPACE);
+
+        if (isPressed && !lastPressed)
+        {
+            counter++;
+            lastPressed = true;
+        }
+        else if (!isPressed && lastPressed)
+        {
+            lastPressed = false;
+        }
+
+        if (Input::getKeyDown(GLFW_KEY_R))
+            counter = 0;
+
+        std::fprintf(stdout, "Counter: % 5d\r", counter);
+        std::fflush(stdout);
     }
 
     void draw() override

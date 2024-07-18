@@ -4,6 +4,7 @@
 #include "window.h"
 #include "timer.h"
 #include "testscene.h"
+#include "input.h"
 #include "scenemanager.h"
 
 class Application
@@ -17,8 +18,6 @@ private:
     Window m_window;
     SceneManager m_sceneManager;
     Timer m_timer;
-
-    void processInput();
 
     void update();
 
