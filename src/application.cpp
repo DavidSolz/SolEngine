@@ -13,7 +13,7 @@ Application::Application(const std::string &title, const uint32_t &width, const 
 
 void Application::setFramerate(const uint32_t &fps)
 {
-    uint32_t clampedRate = fps < 1 ? 1 : fps;
+    uint32_t clampedRate = std::max(uint32_t(1), fps);
     m_targetFrameDuration = 1.0 / clampedRate;
 }
 
@@ -22,12 +22,12 @@ void Application::loop()
 
     while (isRunning())
     {
+        m_deltaTime = m_timer.restart();
+
         Input::update(m_window);
         update();
         fixedUpdate();
         draw();
-
-        m_deltaTime = m_timer.restart();
     }
 }
 

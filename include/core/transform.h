@@ -34,6 +34,18 @@ public:
 
     void update([[maybe_unused]] const float &deltaTime) override;
 
+    void setX(const float &x);
+
+    void setY(const float &y);
+
+    void setZ(const float &z);
+
+    float getX() const;
+
+    float getY() const;
+
+    float getZ() const;
+
     Vector3 &getLocalPosition();
 
     Quaternion &getLocalRotation();

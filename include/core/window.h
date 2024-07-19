@@ -41,6 +41,8 @@ public:
 
     void setButtonCallback(GLFWmousebuttonfun callback);
 
+    void setFramesPerSecond(const uint32_t &fps = 60);
+
     void clearBuffers(GLenum buffer = 0);
 
     void updateFramebufferSize();

@@ -102,9 +102,13 @@ int Window::getWindowHeight()
     return m_height;
 }
 
+void Window::setFramesPerSecond(const uint32_t &fps)
+{
+    glfwSwapInterval(fps);
+}
+
 void Window::clearBuffers(GLenum buffer)
 {
-
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(m_bufferBits | buffer);
 }

@@ -48,6 +48,39 @@ void Transform::update([[maybe_unused]] const float &deltaTime)
     computeModelMatrix();
 }
 
+void Transform::setX(const float &x)
+{
+    m_position.x = x;
+    m_isDirty = true;
+}
+
+void Transform::setY(const float &y)
+{
+    m_position.y = y;
+    m_isDirty = true;
+}
+
+void Transform::setZ(const float &z)
+{
+    m_position.z = z;
+    m_isDirty = true;
+}
+
+float Transform::getX() const
+{
+    return m_position.x;
+}
+
+float Transform::getY() const
+{
+    return m_position.y;
+}
+
+float Transform::getZ() const
+{
+    return m_position.z;
+}
+
 Vector3 &Transform::getLocalPosition()
 {
     return m_position;

@@ -3,7 +3,7 @@
 
 #include "sprite.h"
 #include "mesh.h"
-#include "gameobject.h"
+#include "gameobject.hpp"
 #include "scene.h"
 #include "glshader.h"
 #include "window.h"
@@ -59,32 +59,22 @@ public:
 
     void update(const float &deltaTime) override
     {
-        static float accumulatedTime;
-        static bool lastPressed = false;
-        static int counter = 0;
 
-        m_object.transform->setLocalPosition(Vector3(std::cos(accumulatedTime), 0, 0));
+        const auto position = m_object.transform->getLocalPosition();
+
+        if (Input::getKeyDown(GLFW_KEY_RIGHT))
+            m_object.transform->setX(position.x + deltaTime);
+
+        if (Input::getKeyDown(GLFW_KEY_LEFT))
+            m_object.transform->setX(position.x - deltaTime);
+
+        if (Input::getKeyDown(GLFW_KEY_UP))
+            m_object.transform->setY(position.y + deltaTime);
+
+        if (Input::getKeyDown(GLFW_KEY_DOWN))
+            m_object.transform->setY(position.y - deltaTime);
+
         m_object.update(deltaTime);
-
-        accumulatedTime += deltaTime;
-
-        bool isPressed = Input::getKeyDown(GLFW_KEY_SPACE);
-
-        if (isPressed && !lastPressed)
-        {
-            counter++;
-            lastPressed = true;
-        }
-        else if (!isPressed && lastPressed)
-        {
-            lastPressed = false;
-        }
-
-        if (Input::getKeyDown(GLFW_KEY_R))
-            counter = 0;
-
-        std::fprintf(stdout, "Counter: % 5d\r", counter);
-        std::fflush(stdout);
     }
 
     void draw() override
