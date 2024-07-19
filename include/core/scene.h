@@ -2,10 +2,14 @@
 #define SCENE_H
 
 #include "input.h"
+#include "gameobjectwarehouse.h"
 #include <memory>
 
 class Scene
 {
+protected:
+    GameObjectWarehouse m_objects;
+
 public:
     virtual void onCreate() = 0;
     virtual void onDestroy() = 0;

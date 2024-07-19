@@ -51,6 +51,8 @@ public:
 
         m_sprite = m_object.addComponent<Sprite>();
         m_sprite->load("assets/textures/square.png");
+
+        m_objects.add(std::make_shared<GameObject>(m_object));
     }
 
     void onDestroy() override
@@ -74,14 +76,14 @@ public:
         if (Input::getKeyDown(GLFW_KEY_DOWN))
             m_object.transform->setY(position.y - deltaTime);
 
-        m_object.update(deltaTime);
+        m_objects.update(deltaTime);
     }
 
     void draw() override
     {
         m_shader.use();
         m_shader.setUniform("modelMatrix", m_object.transform->getModelMatrix());
-        m_object.draw(m_shader);
+        m_objects.draw(m_shader);
         m_mesh.render();
     }
 };
