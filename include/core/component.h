@@ -26,7 +26,7 @@ public:
 
     virtual void fixedUpdate([[maybe_unused]] const float &deltaTime) {}
 
-    virtual void draw([[maybe_unused]]GLShader &shader) {}
+    virtual void draw([[maybe_unused]] GLShader &shader) {}
 };
 
 #endif

@@ -1,11 +1,11 @@
-#include "gameobjectwarehouse.h"
+#include "gameobjectstorage.h"
 
-void GameObjectWarehouse::add(std::shared_ptr<GameObject> object)
+void GameObjectStorage::add(std::shared_ptr<GameObject> object)
 {
     m_toAdd.emplace_back(object);
 }
 
-void GameObjectWarehouse::update(const float &deltaTime)
+void GameObjectStorage::update(const float &deltaTime)
 {
     if (!m_toAdd.empty())
     {
@@ -27,13 +27,13 @@ void GameObjectWarehouse::update(const float &deltaTime)
         object->update(deltaTime);
 }
 
-void GameObjectWarehouse::fixedUpdate(const float &deltaTime)
+void GameObjectStorage::fixedUpdate(const float &deltaTime)
 {
     for (auto &object : m_objects)
         object->fixedUpdate(deltaTime);
 }
 
-void GameObjectWarehouse::draw(GLShader &shader)
+void GameObjectStorage::draw(GLShader &shader)
 {
     for (auto &object : m_objects)
         object->draw(shader);

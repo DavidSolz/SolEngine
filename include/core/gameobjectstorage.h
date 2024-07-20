@@ -1,11 +1,11 @@
-#ifndef OBJECT_WAREHOUSE_H
-#define OBJECT_WAREHOUSE_H
+#ifndef GAME_OBJECT_STORAGE_H
+#define GAME_OBJECT_STORAGE_H
 
 #include "gameobject.hpp"
 #include <memory>
 #include <vector>
 
-class GameObjectWarehouse
+class GameObjectStorage
 {
 private:
     std::vector<std::shared_ptr<GameObject>> m_objects;

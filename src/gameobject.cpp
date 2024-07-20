@@ -1,36 +1,38 @@
 #include "gameobject.hpp"
 
-GameObject::GameObject()
+GameObject::GameObject(const unsigned int &id, std::shared_ptr<ComponentAllocator> allocator)
 {
-    transform = addComponent<Transform>();
+    this->m_id = id;
+    this->m_allocator = allocator;
+    this->transform = addComponent<Transform>();
 }
 
 void GameObject::awake()
 {
-    for (auto &component : m_components)
-        component->awake();
+    m_allocator->awake(m_id);
 }
 
 void GameObject::start()
 {
-    for (auto &component : m_components)
-        component->start();
+    m_allocator->start(m_id);
 }
 
 void GameObject::update(const float &deltaTime)
 {
-    for (auto &component : m_components)
-        component->update(deltaTime);
+    m_allocator->update(m_id, deltaTime);
 }
 
 void GameObject::fixedUpdate(const float &deltaTime)
 {
-    for (auto &component : m_components)
-        component->fixedUpdate(deltaTime);
+    m_allocator->fixedUpdate(m_id, deltaTime);
 }
 
 void GameObject::draw(GLShader &shader)
 {
-    for (auto &component : m_components)
-        component->draw(shader);
+    m_allocator->draw(m_id, shader);
+}
+
+unsigned int GameObject::getID() const
+{
+    return m_id;
 }

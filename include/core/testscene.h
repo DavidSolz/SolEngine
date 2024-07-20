@@ -15,7 +15,7 @@ class TestScene : public Scene
 {
 private:
     std::shared_ptr<Sprite> m_sprite;
-    GameObject m_object;
+    std::shared_ptr<Transform> m_transform;
 
     Mesh m_mesh;
     GLShader m_shader;
@@ -26,6 +26,9 @@ public:
         m_shader.attachShader("assets/shaders/default.vert", GL_VERTEX_SHADER);
         m_shader.attachShader("assets/shaders/default.frag", GL_FRAGMENT_SHADER);
         m_shader.link();
+
+        auto object = createObject();
+        m_transform = object->transform;
 
         float width = 0.5f, height = 0.5f;
 
@@ -49,10 +52,8 @@ public:
         m_mesh.setIndices(indices);
         m_mesh.setTexCoords(texCoords);
 
-        m_sprite = m_object.addComponent<Sprite>();
+        m_sprite = object->addComponent<Sprite>();
         m_sprite->load("assets/textures/square.png");
-
-        m_objects.add(std::make_shared<GameObject>(m_object));
     }
 
     void onDestroy() override
@@ -62,19 +63,19 @@ public:
     void update(const float &deltaTime) override
     {
 
-        const auto position = m_object.transform->getLocalPosition();
+        const auto position = m_transform->getLocalPosition();
 
         if (Input::getKeyDown(GLFW_KEY_RIGHT))
-            m_object.transform->setX(position.x + deltaTime);
+            m_transform->setX(position.x + deltaTime);
 
         if (Input::getKeyDown(GLFW_KEY_LEFT))
-            m_object.transform->setX(position.x - deltaTime);
+            m_transform->setX(position.x - deltaTime);
 
         if (Input::getKeyDown(GLFW_KEY_UP))
-            m_object.transform->setY(position.y + deltaTime);
+            m_transform->setY(position.y + deltaTime);
 
         if (Input::getKeyDown(GLFW_KEY_DOWN))
-            m_object.transform->setY(position.y - deltaTime);
+            m_transform->setY(position.y - deltaTime);
 
         m_objects.update(deltaTime);
     }
@@ -82,7 +83,7 @@ public:
     void draw() override
     {
         m_shader.use();
-        m_shader.setUniform("modelMatrix", m_object.transform->getModelMatrix());
+        m_shader.setUniform("modelMatrix", m_transform->getModelMatrix());
         m_objects.draw(m_shader);
         m_mesh.render();
     }
