@@ -3,13 +3,9 @@
 
 #include "sprite.h"
 #include "mesh.h"
-#include "gameobject.hpp"
 #include "scene.h"
 #include "glshader.h"
 #include "window.h"
-
-#include "input.h"
-#include "resourceloader.hpp"
 
 class TestScene : public Scene
 {
@@ -62,7 +58,6 @@ public:
 
     void update(const float &deltaTime) override
     {
-
         const auto position = m_transform->getLocalPosition();
 
         if (Input::getKeyDown(GLFW_KEY_RIGHT))

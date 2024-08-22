@@ -8,12 +8,12 @@
 
 class Scene
 {
-protected:
+private:
     unsigned int m_objectID;
-
     ComponentAllocator m_allocator;
-    GameObjectStorage m_objects;
 
+protected:
+    GameObjectStorage m_objects;
     std::shared_ptr<GameObject> createObject();
 
 public:
