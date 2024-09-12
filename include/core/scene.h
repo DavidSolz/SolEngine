@@ -3,6 +3,7 @@
 
 #include "input.h"
 #include "componentallocator.hpp"
+#include "delegate.hpp"
 #include "gameobjectstorage.h"
 #include <memory>
 
@@ -17,10 +18,10 @@ protected:
     std::shared_ptr<GameObject> createObject();
 
 public:
-    virtual void onCreate() = 0;
-    virtual void onDestroy() = 0;
-    virtual void onActivate() {};
-    virtual void onDeactivate() {};
+    Delegate<void> onCreate;
+    Delegate<void> onDestroy;
+    Delegate<void> onActivate;
+    Delegate<void> onDeactivate;
 
     virtual void update([[maybe_unused]] const float &deltaTime) {}
     virtual void fixedUpdate([[maybe_unused]] const float &deltaTime) {}

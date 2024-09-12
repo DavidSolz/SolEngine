@@ -16,8 +16,7 @@ private:
     Mesh m_mesh;
     GLShader m_shader;
 
-public:
-    void onCreate() override
+    void create()
     {
         m_shader.attachShader("assets/shaders/default.vert", GL_VERTEX_SHADER);
         m_shader.attachShader("assets/shaders/default.frag", GL_FRAGMENT_SHADER);
@@ -52,12 +51,16 @@ public:
         m_sprite->load("assets/textures/square.png");
     }
 
-    void onDestroy() override
+public:
+    TestScene() : Scene()
     {
+        onCreate.add([this]()
+                     { create(); });
     }
 
     void update(const float &deltaTime) override
     {
+
         const auto position = m_transform->getLocalPosition();
 
         if (Input::getKeyDown(GLFW_KEY_RIGHT))

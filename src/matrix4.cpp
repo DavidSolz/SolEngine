@@ -1,76 +1,83 @@
 #include "matrix4.h"
 
-Matrix4::Matrix4(){
-
-    for(int32_t i = 0; i < 16; i++)
-        m_data[i] = 0.0f;
-
+Matrix4::Matrix4()
+{
     identity();
 }
 
-void Matrix4::transpose(){
+void Matrix4::transpose()
+{
 
-    for(int32_t i = 0; i < 4; i ++){
-        for( int32_t j = i + 1; j < 4; j ++){
-            float temp = m_data[i * 4 +j];
-            m_data[i * 4 + j] = m_data[j*4+i];
-            m_data[j*4+i] = temp;
+    for (int32_t i = 0; i < 4; i++)
+    {
+        for (int32_t j = i + 1; j < 4; j++)
+        {
+            float temp = m_data[i * 4 + j];
+            m_data[i * 4 + j] = m_data[j * 4 + i];
+            m_data[j * 4 + i] = temp;
         }
     }
-
 }
 
-void Matrix4::identity(){
+void Matrix4::identity()
+{
+
+    std::memset(m_data.data(), 0, sizeof(float) * 16);
 
     m_data[0] = 1.0f;
     m_data[5] = 1.0f;
     m_data[10] = 1.0f;
     m_data[15] = 1.0f;
-
 }
 
-float& Matrix4::operator[](const int32_t & index){
+float &Matrix4::operator[](const int32_t &index)
+{
     uint32_t idx = std::max(0, std::min(index, 16));
     return m_data[idx];
 }
 
-Matrix4 Matrix4::operator*(const Matrix4 & matrix) const{
+Matrix4 Matrix4::operator*(const Matrix4 &matrix) const
+{
 
     Matrix4 result;
 
-    for( int32_t i = 0; i < 4; i++ ){
+    for (int32_t i = 0; i < 4; i++)
+    {
 
-        for( int32_t j = 0; j < 4; j++ ){
+        for (int32_t j = 0; j < 4; j++)
+        {
 
             float sum = 0.0f;
 
-            for( int32_t k = 0; k < 4; k++ ){
+            for (int32_t k = 0; k < 4; k++)
+            {
                 sum += m_data[i * 4 + k] * matrix.m_data[k * 4 + j];
             }
 
             result.m_data[i * 4 + j] = sum;
-
         }
-
     }
 
     return result;
 }
 
-void Matrix4::show() const{
+void Matrix4::show() const
+{
 
-    std::cout<<std::endl;
+    std::cout << std::endl;
 
-    for(int32_t i = 0; i < 4; i ++){
-        for( int32_t j = 0; j < 4; j++){
-            std::cout << m_data[i*4+j] << " ";
+    for (int32_t i = 0; i < 4; i++)
+    {
+        for (int32_t j = 0; j < 4; j++)
+        {
+            std::cout << m_data[i * 4 + j] << " ";
         }
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
-
 }
 
-float Matrix4::determinant() const{
+float Matrix4::determinant() const
+{
 
     float det1 = m_data[0] * m_data[5] - m_data[1] * m_data[4];
     float det2 = m_data[2] * m_data[7] - m_data[3] * m_data[6];
@@ -82,7 +89,8 @@ float Matrix4::determinant() const{
     return det;
 }
 
-Matrix4 Matrix4::translate(const Vector3 & translation){
+Matrix4 Matrix4::translate(const Vector3 &translation)
+{
 
     Matrix4 result;
 
@@ -95,10 +103,10 @@ Matrix4 Matrix4::translate(const Vector3 & translation){
     result.m_data[15] = 1;
 
     return result;
-
 }
 
-Matrix4 Matrix4::scale(const Vector3 & scale){
+Matrix4 Matrix4::scale(const Vector3 &scale)
+{
 
     Matrix4 result;
 
@@ -108,14 +116,14 @@ Matrix4 Matrix4::scale(const Vector3 & scale){
     result.m_data[15] = 1;
 
     return result;
-
 }
 
-Matrix4 Matrix4::rotate(const float & angle, const Vector3 & axis){
+Matrix4 Matrix4::rotate(const float &angle, const Vector3 &axis)
+{
 
     Vector3 normalized = axis.normalize();
 
-    constexpr float deg2rad = 3.1415926535f/180.0f;
+    constexpr float deg2rad = 3.1415926535f / 180.0f;
 
     float angleInRad = angle * deg2rad;
 

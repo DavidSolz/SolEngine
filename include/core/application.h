@@ -13,8 +13,6 @@ private:
     float m_deltaTime;
     float m_targetFrameDuration;
 
-    std::shared_ptr<TestScene> m_testscene;
-
     Window m_window;
     SceneManager m_sceneManager;
     Timer m_timer;
@@ -33,6 +31,8 @@ public:
     void setFramerate(const uint32_t &fps = 60);
 
     void loop();
+
+    SceneManager & getSceneManager();
 };
 
 #endif

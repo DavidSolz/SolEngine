@@ -6,7 +6,8 @@ Application::Application(const std::string &title, const uint32_t &width, const 
     this->m_window.open(width, height, title);
     setFramerate();
 
-    m_testscene = std::make_shared<TestScene>();
+    std::shared_ptr<TestScene> m_testscene = std::make_shared<TestScene>();
+
     auto m_t = m_sceneManager.add(m_testscene);
     m_sceneManager.transiteTo(m_t);
 }
@@ -29,6 +30,11 @@ void Application::loop()
         fixedUpdate();
         draw();
     }
+}
+
+SceneManager &Application::getSceneManager()
+{
+    return m_sceneManager;
 }
 
 bool Application::isRunning() const
